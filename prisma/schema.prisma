@@ -1,0 +1,119 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// A Twitter/X account being monitored 24/7
+model WatchedAccount {
+  id           String   @id @default(cuid())
+  username     String   @unique // handle without @
+  displayName  String?
+  avatarColor  String?  // accent color for the generated avatar
+  bio          String?
+  notes        String?
+  active       Boolean  @default(true)
+  // what to track (dashboard scope)
+  trackPosts   Boolean  @default(true)
+  trackReplies Boolean  @default(true)
+  trackReposts Boolean  @default(true)
+  trackLikes   Boolean  @default(false)
+  trackFollows Boolean  @default(true)
+  // state
+  externalId   String?  // twitter user id
+  lastTweetId  String?
+  // latest REAL follower count seen by the scanner (session profile or FixTweet).
+  // Persisted on every sweep that sees a profile — zero extra requests — so the
+  // dashboard sidebar can show accurate counts without hammering X.
+  followersCount Int?
+  followersAt    DateTime?
+  lastScanAt   DateTime?
+  // known following list (lowercase handles, most-recent-first) — baseline
+  // for detecting NEW follows by this account
+  followingSeeds String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  events ActivityEvent[]
+}
+
+// A detected piece of activity (post, repost, reply, like, follow...)
+model ActivityEvent {
+  id         String         @id @default(cuid())
+  accountId  String
+  account    WatchedAccount @relation(fields: [accountId], references: [id], onDelete: Cascade)
+  type       String // POST | REPOST | REPLY | QUOTE | LIKE | FOLLOW | PROFILE
+  externalId String? // tweet id / dedup key
+  text       String?
+  url        String?
+  targetUser String? // e.g. followed user / liked tweet author
+  metrics    String? // JSON string: { likes, retweets, replies, views }
+  notified   Boolean        @default(false)
+  detectedAt DateTime       @default(now())
+  createdAt  DateTime       @default(now())
+
+  @@unique([accountId, externalId])
+  @@index([accountId, detectedAt])
+  @@index([detectedAt])
+}
+
+// Singleton settings row (id = "default")
+model Settings {
+  id               String   @id @default("default")
+  telegramBotToken String?
+  telegramChatId   String?
+  // X web-client session (burner account) — powers the free GraphQL timeline reads
+  xAuthToken       String?  // auth_token cookie value (40 hex chars)
+  xCt0             String?  // ct0 cookie value (csrf token)
+  pollIntervalSec  Int      @default(60)
+  alertsEnabled    Boolean  @default(true)
+  // Telegram notification scope — high-signal routing (dashboard keeps everything)
+  notifyOnFollows  Boolean  @default(true)
+  notifyOnPosts    Boolean  @default(true)
+  notifyOnReplies  Boolean  @default(false)
+  notifyOnReposts  Boolean  @default(false)
+  // getUpdates cursor for the two-way Telegram bot (command poller).
+  // Reset to 0 whenever the bot token changes (different bot = different id space).
+  telegramOffset   Int      @default(0)
+  // Channel Guard — anti-link protection for the owner's Telegram group/channel.
+  // guardChatId set = guard is armed for that chat; guardEnabled = pause switch.
+  guardChatId      String?
+  guardEnabled     Boolean  @default(true)
+  // strict = treat admins like members too (the owner is always exempt)
+  guardStrict      Boolean  @default(false)
+  updatedAt        DateTime @updatedAt
+}
+
+// History / health of scan cycles
+model ScanLog {
+  id              String    @id @default(cuid())
+  startedAt       DateTime  @default(now())
+  finishedAt      DateTime?
+  status          String    @default("running") // running | success | partial | error
+  trigger         String    @default("auto") // auto | manual
+  mode            String    @default("keyless") // keyless | live
+  accountsChecked Int       @default(0)
+  eventsFound     Int       @default(0)
+  alertsSent      Int       @default(0)
+  message         String?
+}
+
+// Channel Guard audit trail — every link enforcement action in a guarded chat
+model GuardLog {
+  id        String   @id @default(cuid())
+  chatId    String
+  chatTitle String?
+  userId    String?
+  username  String?
+  firstName String?
+  action    String   // "deleted" | "deleted+banned" | "exempt" | "failed"
+  detail    String?  // Telegram API errors / snippet
+  text      String?  // offending message snippet
+  messageId String?
+  createdAt DateTime @default(now())
+
+  @@index([chatId, createdAt])
+}

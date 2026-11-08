@@ -1,0 +1,240 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  /* Command-center accents (theme-stable — same in both modes) */
+  --color-xblue: #1d9bf0;
+  --color-live: #10b981;
+  --color-alert: #f43f5e;
+}
+
+/* ---------------------------------------------------------------------------
+   TweetRadar Command Center — dual-theme CSS variable system
+   Dark (default) : obsidian #0B0F17 · charcoal cards #151C28 · white/8% borders
+   Light          : off-white #F8FAFC · white cards #FFFFFF · black/8% borders
+   Accents        : X Blue #1D9BF0 · Emerald #10B981 (live/follows) · Rose #F43F5E
+   --------------------------------------------------------------------------- */
+
+:root {
+  --radius: 0.75rem;
+
+  /* Light Mode */
+  --background: #f8fafc;
+  --foreground: #0f172a;
+  --card: #ffffff;
+  --card-foreground: #0f172a;
+  --popover: #ffffff;
+  --popover-foreground: #0f172a;
+  --primary: #1d9bf0;
+  --primary-foreground: #ffffff;
+  --secondary: #eef2f7;
+  --secondary-foreground: #0f172a;
+  --muted: #f1f5f9;
+  --muted-foreground: #64748b;
+  --accent: #e8eef5;
+  --accent-foreground: #0f172a;
+  --destructive: #e11d48;
+  --border: rgba(0, 0, 0, 0.08);
+  --input: rgba(0, 0, 0, 0.1);
+  --ring: #1d9bf0;
+  --chart-1: #1d9bf0;
+  --chart-2: #10b981;
+  --chart-3: #f43f5e;
+  --chart-4: #8b5cf6;
+  --chart-5: #f59e0b;
+  --sidebar: #ffffff;
+  --sidebar-foreground: #0f172a;
+  --sidebar-primary: #1d9bf0;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #eef2f7;
+  --sidebar-accent-foreground: #0f172a;
+  --sidebar-border: rgba(0, 0, 0, 0.08);
+  --sidebar-ring: #1d9bf0;
+
+  /* Theme-aware utility inputs */
+  --scroll-thumb: rgba(0, 0, 0, 0.18);
+  --scroll-thumb-hover: rgba(0, 0, 0, 0.3);
+  --cc-line: rgba(15, 23, 42, 0.05);
+  --cc-panel-shadow: 0 1px 2px rgba(15, 23, 42, 0.05), 0 8px 24px -12px rgba(15, 23, 42, 0.12);
+  --cc-panel-sheen: inset 0 1px 0 0 rgba(255, 255, 255, 0.6);
+  --cc-canvas: #f8fafc;
+}
+
+.dark {
+  /* Dark Mode (default) */
+  --background: #0b0f17;
+  --foreground: #f1f5f9;
+  --card: #151c28;
+  --card-foreground: #f1f5f9;
+  --popover: #151c28;
+  --popover-foreground: #f1f5f9;
+  --primary: #1d9bf0;
+  --primary-foreground: #ffffff;
+  --secondary: #1b2432;
+  --secondary-foreground: #f1f5f9;
+  --muted: #1b2432;
+  --muted-foreground: #8b98a9;
+  --accent: #1b2432;
+  --accent-foreground: #f1f5f9;
+  --destructive: #f43f5e;
+  --border: rgba(255, 255, 255, 0.08);
+  --input: rgba(255, 255, 255, 0.12);
+  --ring: #1d9bf0;
+  --chart-1: #1d9bf0;
+  --chart-2: #10b981;
+  --chart-3: #f43f5e;
+  --chart-4: #8b5cf6;
+  --chart-5: #f59e0b;
+  --sidebar: #151c28;
+  --sidebar-foreground: #f1f5f9;
+  --sidebar-primary: #1d9bf0;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #1b2432;
+  --sidebar-accent-foreground: #f1f5f9;
+  --sidebar-border: rgba(255, 255, 255, 0.08);
+  --sidebar-ring: #1d9bf0;
+
+  /* Theme-aware utility inputs */
+  --scroll-thumb: rgba(255, 255, 255, 0.14);
+  --scroll-thumb-hover: rgba(255, 255, 255, 0.26);
+  --cc-line: rgba(255, 255, 255, 0.025);
+  --cc-panel-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.04), 0 8px 24px -12px rgba(0, 0, 0, 0.6);
+  --cc-panel-sheen: inset 0 1px 0 0 rgba(255, 255, 255, 0.04);
+  --cc-canvas: #0b0f17;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Command-center utilities (all theme-aware via the variables above)
+   --------------------------------------------------------------------------- */
+
+@layer utilities {
+  /* Slim native scrollbar that adapts to the active theme — used everywhere we
+     scroll natively (replaces Radix ScrollArea whose viewport failed to clip
+     under `max-h`, letting list rows bleed over sibling cards). */
+  .scroll-slim {
+    scrollbar-width: thin;
+    scrollbar-color: var(--scroll-thumb) transparent;
+    overscroll-behavior: contain;
+  }
+  .scroll-slim::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  .scroll-slim::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  .scroll-slim::-webkit-scrollbar-thumb {
+    background: var(--scroll-thumb);
+    border-radius: 9999px;
+  }
+  .scroll-slim::-webkit-scrollbar-thumb:hover {
+    background: var(--scroll-thumb-hover);
+  }
+
+  /* Card panel: raised surface with a hairline top sheen and a soft shadow,
+     both tuned per theme. */
+  .panel {
+    background: var(--card);
+    box-shadow: var(--cc-panel-sheen), var(--cc-panel-shadow);
+  }
+}
+
+/* Page canvas: subtle command-center glow + tactical grid, tinted per theme. */
+.cc-canvas {
+  background:
+    radial-gradient(64rem 30rem at 50% -10rem, rgb(29 155 240 / 0.07), transparent 62%),
+    radial-gradient(40rem 24rem at 90% -6rem, rgb(16 185 129 / 0.04), transparent 60%),
+    var(--cc-canvas);
+}
+.cc-grid-overlay {
+  background-image:
+    linear-gradient(to right, var(--cc-line) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--cc-line) 1px, transparent 1px);
+  background-size: 44px 44px;
+  mask-image: radial-gradient(75rem 42rem at 50% -4rem, black, transparent 78%);
+  -webkit-mask-image: radial-gradient(75rem 42rem at 50% -4rem, black, transparent 78%);
+}
+
+/* Sweeping radar ring behind the logo chip (X-blue beam). */
+@keyframes radar-sweep {
+  0%   { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+.radar-sweep {
+  background: conic-gradient(from 0deg, rgb(29 155 240 / 0.55), transparent 22%);
+  animation: radar-sweep 3.2s linear infinite;
+}
+
+/* Pulsing "live" halo for status dots. */
+@keyframes live-ping {
+  0%   { transform: scale(1);   opacity: 0.7; }
+  75%, 100% { transform: scale(2.4); opacity: 0; }
+}
+.live-ping::before,
+.live-ping::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 9999px;
+  background: currentColor;
+  animation: live-ping 1.8s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+.live-ping::after {
+  animation-delay: 0.9s;
+}
+
+/* Theme toggle icons: pure-CSS swap driven by <html class="dark"> — no React
+   state, no hydration drift. Dark shows Sun (switch to light); light shows
+   Moon (switch to dark). */
+.theme-icon-sun { display: none; }
+.theme-icon-moon { display: inline-block; }
+html:not(.dark) .theme-icon-sun { display: inline-block; }
+html:not(.dark) .theme-icon-moon { display: none; }
